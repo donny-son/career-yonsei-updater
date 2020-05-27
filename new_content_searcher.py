@@ -2,6 +2,7 @@ from browser import Browser
 from bs4 import BeautifulSoup
 from slack_sender import post_slack
 import time
+from datetime import datetime
 
 
 def clean_title(text:str):
@@ -41,7 +42,8 @@ class NewContentSearcher(Browser):
 
     def __push_contents(self):
         number_of_new_contents = len(self.updated_contents)
-        post_slack(f'***{number_of_new_contents}개의 새로운 취업정보가 있습니다!***')
+        updated_time = datetime.now().strftime('%Y-%m-%d %H 시 : %M 분')
+        post_slack(f'***{updated_time}:{number_of_new_contents}개의 새로운 취업정보가 있습니다!***')
         get_all_values(self.updated_contents)
 
 
