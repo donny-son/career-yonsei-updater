@@ -3,7 +3,7 @@ import schedule
 from slack_sender import post_slack
 from datetime import datetime
 
-schedule.every(10).hours.do(NewContentSearcher(window_mode=False).main)
+schedule.every(10).seconds.do(NewContentSearcher(window_mode=False).main)
 
 if __name__ == '__main__':
 
