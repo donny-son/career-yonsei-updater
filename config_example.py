@@ -10,7 +10,7 @@ LOG_DIR = ROOT_DIR + '/' + 'storage' + '/' + 'log'
 # Slack
 @dataclass
 class SlackConfig:
-    CHANNEL = 'careeryonsei'
+    CHANNEL = 'stats-career-yonsei'
     SLACK_API_TOKEN = ""
 
 
