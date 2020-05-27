@@ -17,7 +17,7 @@ class Browser:
         if self.window_mode is False:
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument('--headless')
-            browser = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+            browser = webdriver.Chrome(options=chrome_options)
         else:
             browser = webdriver.Chrome(ChromeDriverManager().install())
         browser.get(self.url)
