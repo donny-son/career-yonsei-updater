@@ -17,4 +17,4 @@ def post_slack(txt: str):
 
 if __name__ == '__main__':
 
-    post_slack('hellow world')
+    post_slack('Job opportunities for Stats-Yonsei')
