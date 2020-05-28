@@ -9,7 +9,7 @@ def initiate():
 
 def save_obj(obj, name: str):
     with open(ROOT_DIR+'/'+'obj/' + name + '.pkl', 'wb') as f:
-        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(obj, f, pickle.DEFAULT_PROTOCOL)
 
 
 def load_obj(name: str):
@@ -30,3 +30,5 @@ if __name__ == '__main__':
         print('Skip Initialization')
     PREVIOUS_UPDATES = load_obj('PREVIOUS_UPDATES')
     CURRENT_UPDATES = load_obj('CURRENT_UPDATES')
+    print(PREVIOUS_UPDATES)
+    print(CURRENT_UPDATES)
