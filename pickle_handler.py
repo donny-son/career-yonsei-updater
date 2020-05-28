@@ -9,7 +9,7 @@ def initiate():
 
 def save_obj(obj, name: str):
     with open(ROOT_DIR+'/'+'obj/' + name + '.pkl', 'wb') as f:
-        pickle.dump(obj, f, pickle.DEFAULT_PROTOCOL)
+        pickle.dump(obj, f, pickle.DEFAULT_PROTOCOL)  # 4
 
 
 def load_obj(name: str):
