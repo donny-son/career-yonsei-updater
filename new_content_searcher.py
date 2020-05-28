@@ -3,24 +3,29 @@ from bs4 import BeautifulSoup
 from slack_sender import post_slack
 import time
 from datetime import datetime
+from pickle_handler import save_obj, load_obj, PREVIOUS_UPDATES
+import copy
 
 
 def clean_title(text:str):
     return ''.join(text.split())
 
-def get_all_values(nested_dictionary):
-    for key, value in nested_dictionary.items():
+def get_all_values(updated_dict: dict):
+    for key, value in updated_dict.items():
         if type(value) is dict:
             get_all_values(value)
         else:
-            post_slack(f'{key}: {value}')
+            post_slack(f'{key}\n{value}')
 
 class NewContentSearcher(Browser):
 
     def main(self):
         self.updated_contents = {}
         self.__soup_page_source()
-        self.__push_contents()
+        if self.__check_any_updates():
+            self.__push_contents()
+        else:
+            post_slack('아직 새로 올라온 취업 공고가 없네용.....ㅠㅠ')
         self.browser.refresh()
         time.sleep(3)
         # Browser.browser.quit()
@@ -35,17 +40,27 @@ class NewContentSearcher(Browser):
             new_content_a = new_content_tr.find('a', href=True)
             cleaned_title = clean_title(new_content_a.text)
             new_content_url = self.url + new_content_a['href']
-            self.updated_contents[f'{new_content_index}'] = {}
-            self.updated_contents[f'{new_content_index}']['title'] = cleaned_title
-            self.updated_contents[f'{new_content_index}']['url'] = new_content_url
+            self.updated_contents[f'{cleaned_title}'] = new_content_url
             new_content_index += 1
+        self.updated_contents_copy = copy.deepcopy(self.updated_contents)
+        save_obj(self.updated_contents, 'CURRENT_UPDATES')
 
     def __push_contents(self):
         number_of_new_contents = len(self.updated_contents)
-        updated_time = datetime.now().strftime('%Y-%m-%d %H 시 : %M 분')
-        post_slack(f'***{updated_time}:{number_of_new_contents}개의 새로운 취업정보가 있습니다!***')
+        post_slack(f'***와!!! {number_of_new_contents}개의 새로운 취업정보가 있습니다!***')
         get_all_values(self.updated_contents)
 
+    def __check_any_updates(self, PREVIOUS_UPDATE=PREVIOUS_UPDATES) -> bool:
+        if PREVIOUS_UPDATE == self.updated_contents:
+            save_obj(self.updated_contents, 'PREVIOUS_UPDATES')
+            return False
+        else:
+            # TODO:: when there is 1 or more overlapping case
+            shared_items = {k: self.updated_contents[k] for k in self.updated_contents if k in PREVIOUS_UPDATE and self.updated_contents[k] == PREVIOUS_UPDATE[k]}
+            for key in shared_items.keys():
+                del self.updated_contents[key]
+            save_obj(self.updated_contents_copy, 'PREVIOUS_UPDATES')
+            return True
 
 
 
