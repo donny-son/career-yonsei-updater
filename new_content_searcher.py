@@ -2,8 +2,7 @@ from browser import Browser
 from bs4 import BeautifulSoup
 from slack_sender import post_slack
 import time
-from datetime import datetime
-from pickle_handler import save_obj, load_obj, PREVIOUS_UPDATES
+from pickle_handler import save_obj, PREVIOUS_UPDATES
 import copy
 
 

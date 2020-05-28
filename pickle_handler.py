@@ -13,7 +13,7 @@ def save_obj(obj, name: str):
 
 
 def load_obj(name: str):
-    with open(ROOT_DIR+'/'+'obj/' + name + '.pkl', 'wb') as f:
+    with open(ROOT_DIR+'/'+'obj/' + name + '.pkl', 'rb') as f:
         return pickle.load(f)
 
 try:
@@ -25,3 +25,5 @@ except Exception as e:
 if __name__ == '__main__':
     initiate()
     print('Initiation Complete. Please run scheduled_run.py')
+    PREVIOUS_UPDATES = load_obj('PREVIOUS_UPDATES')
+    CURRENT_UPDATES = load_obj('CURRENT_UPDATES')
