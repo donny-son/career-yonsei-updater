@@ -1,5 +1,5 @@
 import pickle
-
+from config import ROOT_DIR
 
 def initiate():
     PREVIOUS_UPDATES = {}
@@ -8,12 +8,12 @@ def initiate():
     save_obj(CURRENT_UPDATES, 'CURRENT_UPDATES')
 
 def save_obj(obj, name: str):
-    with open('obj/' + name + '.pkl', 'wb') as f:
+    with open(ROOT_DIR+'/'+'obj/' + name + '.pkl', 'wb') as f:
         pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
 
 def load_obj(name: str):
-    with open('obj/' + name + '.pkl', 'rb') as f:
+    with open(ROOT_DIR+'/'+'obj/' + name + '.pkl', 'wb') as f:
         return pickle.load(f)
 
 try:
@@ -24,3 +24,4 @@ except Exception as e:
 
 if __name__ == '__main__':
     initiate()
+    print('Initiation Complete. Please run scheduled_run.py')
