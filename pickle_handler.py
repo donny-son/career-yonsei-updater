@@ -23,7 +23,10 @@ except Exception as e:
     print('Please initialize pkl objects by running pickle_handler.py')
 
 if __name__ == '__main__':
-    initiate()
-    print('Initiation Complete. Please run scheduled_run.py')
+    if input('initialize pickles? [Y/n]') == 'Y':
+        initiate()
+        print('Initiation Complete. Please run scheduled_run.py')
+    else:
+        print('Skip Initialization')
     PREVIOUS_UPDATES = load_obj('PREVIOUS_UPDATES')
     CURRENT_UPDATES = load_obj('CURRENT_UPDATES')

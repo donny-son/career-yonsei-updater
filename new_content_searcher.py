@@ -25,9 +25,7 @@ class NewContentSearcher(Browser):
             self.__push_contents()
         else:
             post_slack('아직 새로 올라온 취업 공고가 없네용.....ㅠㅠ')
-        self.browser.refresh()
-        time.sleep(3)
-        # Browser.browser.quit()
+        Browser.browser.quit()
 
 
     def __soup_page_source(self):
