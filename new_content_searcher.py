@@ -1,6 +1,6 @@
 from browser import Browser
 from bs4 import BeautifulSoup
-from slack_sender import post_slack
+from slack_sender import post_slack, post_slack_attachments
 import time
 from pickle_handler import save_obj, PREVIOUS_UPDATES
 import copy
@@ -14,6 +14,7 @@ def get_all_values(updated_dict: dict):
         if type(value) is dict:
             get_all_values(value)
         else:
+
             post_slack(f'{key}\n{value}')
 
 class NewContentSearcher(Browser):
@@ -22,7 +23,7 @@ class NewContentSearcher(Browser):
         self.updated_contents = {}
         self.__soup_page_source()
         if self.__check_any_updates():
-            self.__push_contents()
+            post_slack_attachments(self.__assign_slack_attachments())
         else:
             post_slack('아직 새로 올라온 취업 공고가 없네용.....ㅠㅠ')
 
@@ -41,10 +42,20 @@ class NewContentSearcher(Browser):
         self.updated_contents_copy = copy.deepcopy(self.updated_contents)
         save_obj(self.updated_contents, 'CURRENT_UPDATES')
 
-    def __push_contents(self):
+    def __assign_slack_attachments(self):
         number_of_new_contents = len(self.updated_contents)
-        post_slack(f'***와!!! {number_of_new_contents}개의 새로운 취업정보가 있습니다!***')
-        get_all_values(self.updated_contents)
+        attachments_list = []
+        attachments_dict = {}
+        attachments_dict['pretext'] = f'***와!!! {number_of_new_contents}개의 새로운 취업정보가 있습니다!***'
+        attachments_list.append(attachments_dict)
+        for key, value in self.updated_contents.items():
+            if type(value) is dict:
+                get_all_values(value)
+            else:
+                attachments_dict['title'] = key
+                attachments_dict['title_link'] = value
+                attachments_list.append(attachments_dict)
+        return attachments_list
 
     def __check_any_updates(self, PREVIOUS_UPDATE=PREVIOUS_UPDATES) -> bool:
         if PREVIOUS_UPDATE == self.updated_contents:
