@@ -1,6 +1,6 @@
 from browser import Browser
 from bs4 import BeautifulSoup
-from slack_sender import post_slack, post_slack_attachments
+from slack_sender import post_slack, post_slack_attachments, emojify
 import time
 from pickle_handler import save_obj, PREVIOUS_UPDATES
 import copy
@@ -25,7 +25,7 @@ class NewContentSearcher(Browser):
         if self.__check_any_updates():
             post_slack_attachments(self.__assign_slack_attachments())
         else:
-            post_slack('아직 새로 올라온 취업 공고가 없네용.....ㅠㅠ')
+            post_slack(f':scream: 아직 새로 올라온 취업 공고가 없네용....{emojify("disappointed")}')
 
 
     def __soup_page_source(self):
@@ -46,7 +46,7 @@ class NewContentSearcher(Browser):
         number_of_new_contents = len(self.updated_contents)
         attachments_list = []
         attachments_dict = {}
-        attachments_dict['pretext'] = f'***와!!! {number_of_new_contents}개의 새로운 취업정보가 있습니다!***'
+        attachments_dict['pretext'] = f':laughing: {number_of_new_contents}개의 새로운 취업정보가 있습니다!{emojify("clap") * number_of_new_contents}'
         attachments_list.append(attachments_dict)
         for key, value in self.updated_contents.items():
             attachments_dict = {}
