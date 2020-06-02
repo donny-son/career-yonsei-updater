@@ -24,7 +24,8 @@ schedule.every(5).seconds.do(scheduled_job)
 # schedule.every().day.at('23:59').do(scheduled_job)
 
 if __name__ == '__main__':
-
+    if input('Initial run? [Y/n]') == 'Y':
+        scheduled_job()
 
     while True:
         try:
