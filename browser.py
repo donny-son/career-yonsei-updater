@@ -1,6 +1,7 @@
 from selenium import webdriver
 
-URL = "https://stat.yonsei.ac.kr/stat/board/job.do"
+URL = {'career': "https://stat.yonsei.ac.kr/stat/board/job.do",
+       'news' : "https://stat.yonsei.ac.kr/stat/board/grad_notice.do"}
 
 
 class Browser:
@@ -8,9 +9,9 @@ class Browser:
 
     browser = None
 
-    def __init__(self, window_mode = True):
+    def __init__(self, window_mode = True, page='career'):
         self.window_mode = window_mode
-        self.url = URL
+        self.url = URL['career'] if page == 'career' else URL['news']
         Browser.browser = self.__set_browser()
 
     def __set_browser(self):
@@ -31,5 +32,6 @@ class Browser:
 
 if __name__ == '__main__':
 
-    browser = Browser()
+    browser = Browser(page='news')
+    Browser.browser.quit()
     pass

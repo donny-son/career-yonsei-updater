@@ -9,10 +9,10 @@ def emojify(txt: str):
     return result
 
 
-def post_slack(txt: str):
+def post_slack(channel: str, txt: str):
     try:
         slack.chat.post_message(
-            channel=SlackConfig.CHANNEL,
+            channel=channel,
             text=txt
         )
     except SlackApiError as e:
@@ -28,8 +28,8 @@ def post_slack_hyperlink(job_number: int, job: str, url: str):
         attachments_dict['title_link'] = url
         attachments_list.append()
 
-def post_slack_attachments(attachments: list):
-    slack.chat.post_message(channel=SlackConfig.CHANNEL, text=None, attachments=attachments, as_user=True)
+def post_slack_attachments(channel, attachments: list):
+    slack.chat.post_message(channel=channel, text=None, attachments=attachments, as_user=True)
     print('Posted Content!')
 
 if __name__ == '__main__':
