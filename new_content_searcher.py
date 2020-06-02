@@ -49,6 +49,7 @@ class NewContentSearcher(Browser):
         attachments_dict['pretext'] = f'***와!!! {number_of_new_contents}개의 새로운 취업정보가 있습니다!***'
         attachments_list.append(attachments_dict)
         for key, value in self.updated_contents.items():
+            attachments_dict = {}
             if type(value) is dict:
                 get_all_values(value)
             else:
